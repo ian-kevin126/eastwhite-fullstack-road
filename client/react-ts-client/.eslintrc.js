@@ -1,32 +1,51 @@
+/**
+ * eslint 的主要配置文件，下面分别详述各项功能
+ */
 module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+  },
+
+  // 继承哪些规范，这里我们选择继承alloyTeam 的
+  extends: ['alloy', 'alloy/react', 'alloy/typescript'],
+
+  // 使用哪个解析器
   parser: '@typescript-eslint/parser',
+
+  // 指定 ESLint 可以解析 JSX 语法
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 12,
     sourceType: 'module',
   },
+  plugins: ['@typescript-eslint/eslint-plugin'],
   settings: {
     react: {
+      pragma: 'React',
       version: 'detect',
     },
   },
-  extends: [
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
-    'plugin:jsx-a11y/recommended',
-    'plugin:eslint-comments/recommended',
-    'plugin:prettier/recommended',
+  overrides: [
+    {
+      files: ['*.tsx'],
+      rules: {
+        'no-undef': 'off',
+      },
+    },
   ],
   rules: {
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': ['error'],
-    '@typescript-eslint/no-var-requires': 'off',
-    'react/prop-types': 'off',
-    'react/jsx-uses-react': 'off',
-    'react/react-in-jsx-scope': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    // class 中使用 public 等修饰符定义属性或者方法
+    '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off',
+    'max-params': [0, 5], //函数最多只能有5个参数
+
+    // 允许props传递 组件
+    'react/no-unstable-nested-components': ['error', { allowAsProps: true }],
+
+    // 将逻辑使用可选链表达式来表达
+    // @typescript-eslint/prefer-optional-chain:"off"
   },
-}
+};
